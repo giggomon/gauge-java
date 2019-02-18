@@ -62,15 +62,13 @@ public class StepRegistry {
     }
 
     private StepRegistryEntry getFirstEntry(String stepTemplateText) {
-        return registry.getOrDefault(stepTemplateText, new CopyOnWriteArrayList<>()).stream()
-                .findFirst()
+        return registry.getOrDefault(stepTemplateText, new CopyOnWriteArrayList<>()).stream().findFirst()
                 .orElse(new StepRegistryEntry());
     }
 
     public List<String> getAllStepAnnotationTexts() {
         return registry.values().stream().flatMap(Collection::stream)
-                .map(entry -> entry.getStepValue().getStepAnnotationText())
-                .collect(toList());
+                .map(entry -> entry.getStepValue().getStepAnnotationText()).collect(toList());
     }
 
     String getStepAnnotationFor(String stepTemplateText) {
@@ -88,9 +86,14 @@ public class StepRegistry {
     }
 
     public void removeSteps(String fileName) {
+        System.out.println("Removing steps for ==> " + fileName);
         HashMap<String, CopyOnWriteArrayList<StepRegistryEntry>> newRegistry = new HashMap<>();
         for (String key : registry.keySet()) {
-            CopyOnWriteArrayList<StepRegistryEntry> newEntryList = registry.get(key).stream().filter(entry -> !entry.getFileName().equals(fileName)).collect(toCollection(CopyOnWriteArrayList::new));
+            CopyOnWriteArrayList<StepRegistryEntry> newEntryList = registry.get(key).stream().filter(entry -> {
+                System.out.println(" Entry is ===> " + entry.toString());
+                System.out.println(" Entry file name ====>  " + entry.getFileName());
+                return !entry.getFileName().equals(fileName);
+            }).collect(toCollection(CopyOnWriteArrayList::new));
             if (newEntryList.size() > 0) {
                 newRegistry.put(key, newEntryList);
             }
@@ -115,12 +118,10 @@ public class StepRegistry {
         for (Map.Entry<String, CopyOnWriteArrayList<StepRegistryEntry>> entryList : registry.entrySet()) {
             for (StepRegistryEntry entry : entryList.getValue()) {
                 if (entry.getFileName().equals(filePath)) {
-                    Messages.StepPositionsResponse.StepPosition stepPosition = Messages.StepPositionsResponse.StepPosition.newBuilder()
-                            .setStepValue(entryList.getKey())
-                            .setSpan(Spec.Span.newBuilder()
-                                    .setStart(entry.getSpan().begin.line)
-                                    .setStartChar(entry.getSpan().begin.column)
-                                    .setEnd(entry.getSpan().end.line)
+                    Messages.StepPositionsResponse.StepPosition stepPosition = Messages.StepPositionsResponse.StepPosition
+                            .newBuilder().setStepValue(entryList.getKey())
+                            .setSpan(Spec.Span.newBuilder().setStart(entry.getSpan().begin.line)
+                                    .setStartChar(entry.getSpan().begin.column).setEnd(entry.getSpan().end.line)
                                     .setEndChar(entry.getSpan().end.column).build())
                             .build();
                     stepPositionsList.add(stepPosition);

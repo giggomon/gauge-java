@@ -33,6 +33,9 @@ public class CacheFileRequestProcessor implements IMessageProcessor {
         String fileName = request.getCacheFileRequest().getFilePath();
         String contents = request.getCacheFileRequest().getContent();
         Messages.CacheFileRequest.FileStatus status = request.getCacheFileRequest().getStatus();
+        System.out.println("CacheFileRequest =======>");
+        System.out.println("Status ===> " + status);
+        System.out.println("FileName ===> " + fileName);
         switch (status) {
             case OPENED:
             case CHANGED:
@@ -57,6 +60,7 @@ public class CacheFileRequestProcessor implements IMessageProcessor {
 
     private void loadFromDisk(String fileName) {
         if ((new File(fileName).exists())) {
+            System.out.println("Loading steps fron disk  =======>");
             staticScanner.reloadSteps(fileName, staticScanner.readFile(fileName, Charsets.UTF_8));
         }
     }
