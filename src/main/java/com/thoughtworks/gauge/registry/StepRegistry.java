@@ -90,7 +90,10 @@ public class StepRegistry {
     public void removeSteps(String fileName) {
         HashMap<String, CopyOnWriteArrayList<StepRegistryEntry>> newRegistry = new HashMap<>();
         for (String key : registry.keySet()) {
-            CopyOnWriteArrayList<StepRegistryEntry> newEntryList = registry.get(key).stream().filter(entry -> !entry.getFileName().equals(fileName)).collect(toCollection(CopyOnWriteArrayList::new));
+            CopyOnWriteArrayList<StepRegistryEntry> newEntryList = registry.get(key)
+                    .stream()
+                    .filter(entry -> entry.getFileName() != null && !entry.getFileName().equals(fileName))
+                    .collect(toCollection(CopyOnWriteArrayList::new));
             if (newEntryList.size() > 0) {
                 newRegistry.put(key, newEntryList);
             }

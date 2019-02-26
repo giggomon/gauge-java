@@ -122,6 +122,14 @@ public class StepRegistryTest {
         assertFalse(stepRegistry.isFileCached("/someotherpath/file2.java"));
     }
 
+    @Test
+    public void TestRemoveSteps() {
+        stepRegistry.get(stepValue1.getStepText()).setFileName("/somepath/file.java");
+        stepRegistry.removeSteps("/somepath/file.java");
+
+        assertFalse(stepRegistry.contains(stepValue1.getStepText()));
+    }
+
     @After
     public void tearDown() throws Exception {
         stepRegistry.remove(stepValue1.getStepText());
