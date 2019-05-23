@@ -2,9 +2,15 @@ os:
   - linux
   - osx
 language: java
-jdk:
-  - openjdk8
-  - openjdk11
+matrix:
+  include:
+    - os: linux
+      jdk:
+        - openjdk8
+        - openjdk11
+    - os: osx
+      jdk:
+        - openjdk11
 env:
   - GOPATH="/tmp" GAUGE_ROOT="/tmp/gauge" GAUGE_TELEMETRY_ENABLED=false
 addons:
@@ -24,7 +30,7 @@ script:
   - cd gauge-tests
   - GAUGE_PREFIX=/tmp ./install_latest_gauge_nightly.sh
   - gauge -v
-  - echo "gauge_repository_url = https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/" >> ~/.gauge/config/gauge.properties
+  - gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/
   - export PATH=/tmp/bin:$PATH
   - cd $TRAVIS_BUILD_DIR
   - go run make.go --install
