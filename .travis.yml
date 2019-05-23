@@ -28,7 +28,7 @@ before_install:
     fi
 install:
   - go run make.go
-script: 
+before_script:
   - go version
   - cd ..
   - git clone --depth=1 https://github.com/getgauge/gauge-tests
@@ -43,4 +43,5 @@ script:
   - cd gauge-tests
   - gauge install
   - gauge -v
+script:
   - ./gradlew clean javaFT
