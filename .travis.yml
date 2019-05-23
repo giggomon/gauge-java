@@ -1,16 +1,21 @@
-os:
-  - linux
-  - osx
 language: java
 matrix:
   include:
     - os: linux
       jdk:
         - openjdk8
+    - os: linux
+      jdk:
         - openjdk11
+    - os: linux
+      jdk:
+        - openjdk12
     - os: osx
       jdk:
         - openjdk11
+    - os: osx
+      jdk:
+        - openjdk12
 env:
   - GOPATH="/tmp" GAUGE_ROOT="/tmp/gauge" GAUGE_TELEMETRY_ENABLED=false
 addons:
