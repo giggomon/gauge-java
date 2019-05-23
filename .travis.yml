@@ -7,13 +7,14 @@ jdk:
   - openjdk11
 env:
   - GOPATH="/tmp" GAUGE_ROOT="/tmp/gauge" GAUGE_TELEMETRY_ENABLED=false
+addons:
+  apt:
+    packages:
+      - golang-go
 before_install:
-  - wget https://storage.googleapis.com/golang/go1.7.4.linux-amd64.tar.gz
-  - sudo tar -xvf go1.7.4.linux-amd64.tar.gz
-  - sudo mv go /usr/local
-  - export GOROOT=/usr/local/go
-  - export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
-  - go get github.com/tools/godep
+  - if [ $TRAVIS_OS_NAME == "osx"]; then
+      brew install golang;
+    fi
 install:
   - go run make.go
 script: 
