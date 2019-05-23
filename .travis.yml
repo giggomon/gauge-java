@@ -34,9 +34,8 @@ before_script:
   - git clone --depth=1 https://github.com/getgauge/gauge-tests
   - cd gauge-tests
   - GAUGE_PREFIX=/tmp ./install_latest_gauge_nightly.sh
-  - gauge -v
-  - gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/
   - export PATH=/tmp/bin:$PATH
+  - gauge config gauge_repository_url https://raw.githubusercontent.com/getgauge/gauge-nightly-repository/master/
   - cd $TRAVIS_BUILD_DIR
   - go run make.go --install
   - cd ..
